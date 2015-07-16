@@ -1,6 +1,11 @@
 #export EDITOR='mvim -f -nomru -c "au VimLeave * !open -a Terminal"'
-export EDITOR='mvim -f'
-export VISUAL=$EDITOR
+export EDITOR='mvim -v'
+export VISUAL='mvim -f'
+
+export CLICOLOR='Yes'
+export LSCOLORS='gxBxhxDxfxhxhxhxhxcxcx'
+
+export HISTCONTROL=ignoredups
 
 # Paths for Homebrew
 export PATH=/usr/local/bin:/usr/local/sbin:$HOME/bin:$PATH
@@ -10,10 +15,10 @@ export MANPATH=/usr/local/share/man:$MANPATH
 export PATH=/usr/local/share/npm/bin:$PATH
 
 # Custom bash prompt
-#export GIT_PS1_SHOWDIRTYSTATE=1
-#export GIT_PS1_SHOWUNTRACKEDFILES=''
+export GIT_PS1_SHOWDIRTYSTATE=1
+export GIT_PS1_SHOWUNTRACKEDFILES=''
 #export GIT_PS1_SHOWUPSTREAM="auto verbose"
-#export PS1='\h:\W \u$(__git_ps1 " (%s)")\$ '
+export PS1='\n[$? \h:\w$(__git_ps1 " (%s)")]\n$ '
 
 if [ -f `brew --prefix`/etc/bash_completion ]; then
   . `brew --prefix`/etc/bash_completion
@@ -29,6 +34,10 @@ eval "$(rbenv init -)"
 alias b='bundle'
 alias be='bundle exec'
 alias va='vagrant'
+alias vp='vagrant provision'
+alias hack="git checkout master && git pull && git checkout - && git rebase master $@"
+alias marked="open -a Marked"
+alias diff="diff -u"
 
 # Paths for cabal
 export PATH="$HOME/.cabal/bin:$PATH"
@@ -65,3 +74,4 @@ function rmb {
   fi
 }
 
+ulimit -n 2048
