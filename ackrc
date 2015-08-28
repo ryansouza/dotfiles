@@ -1,2 +1,19 @@
---type-add=ruby=.haml
---type-add=css=.scss
+# Always sort the files
+#--sort−files
+ 
+--ignore-dir=log/
+--ignore-dir=.idea/
+--ignore-dir=node_modules/
+ 
+#make sure ack knows how to search common filetypes used in rails projects
+--type-add=css=scss
+--type-add=ruby=.haml,.feature,.ru
+--type-set=coffeescript=.coffee
+--type-set=coffee=.coffee
+ 
+#make sure ack knows how to search common filetypes used in node.js projects
+--ignore-dir=node_modules
+--type-set=coffee=.coffee
+--type-set=jade=.jade
+--type-set=feature=.feature
+--type-set=json=.json
