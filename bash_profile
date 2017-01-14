@@ -74,4 +74,8 @@ function rmb {
   fi
 }
 
-ulimit -n 2048
+ulimit -n 65536
+ulimit -u 2048
+
+export NVM_DIR="/Users/ryansouza/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm

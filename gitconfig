@@ -25,7 +25,7 @@
 	st = status -sb
 	co = checkout
 	cp = cherry-pick
-	branch-timestamps = for-each-ref --sort='authordate' --format='%(refname):%(authordate)' refs/heads
+	branch-timestamps = for-each-ref --sort='authordate' --format='%(refname:short) : %(authordate)' refs/heads
 
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
@@ -40,3 +40,5 @@
 	ui = true
 [difftool]
 	prompt = false
+[push]
+	default = simple
