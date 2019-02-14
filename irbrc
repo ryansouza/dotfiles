@@ -7,7 +7,7 @@ def ignore_exception
   end
 end
 
-
+blah
 ignore_exception { require 'irb/completion' }
 ignore_exception { require 'rubygems' }
 ignore_exception { require 'pp' }
