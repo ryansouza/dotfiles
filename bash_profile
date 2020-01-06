@@ -9,10 +9,13 @@ export HISTCONTROL=ignoredups
 
 # Paths for Homebrew
 export PATH=/usr/local/bin:/usr/local/sbin:$HOME/bin:$PATH
+export PATH="/usr/local/opt/openssl/bin:$PATH"
 export MANPATH=/usr/local/share/man:$MANPATH
 
 # Paths for node
 export PATH=/usr/local/share/npm/bin:$PATH
+
+export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
 
 # Custom bash prompt
 export GIT_PS1_SHOWDIRTYSTATE=1
@@ -25,7 +28,6 @@ if [ -f `brew --prefix`/etc/bash_completion ]; then
 fi
 
 # Add rbenv for managing ruby versions
-export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
 # Pythonbrew!
@@ -36,6 +38,8 @@ alias be='bundle exec'
 alias va='vagrant'
 alias vp='vagrant provision'
 alias hack="git checkout master && git pull && git checkout - && git rebase master $@"
+alias gca="git commit --amend"
+alias gcane="git commit --amend --no-edit"
 alias marked="open -a Marked"
 alias diff="diff -u"
 
@@ -74,8 +78,33 @@ function rmb {
   fi
 }
 
+function git-release() {
+    git fetch origin -q
+    local current_release_number=$(git tag -l 'v*' | sed -E 's/^v//g' | sort -g | tail -n 1)
+    local current_release="v$current_release_number"
+    echo "Current release: $current_release"
+    local next_release=v$(( $current_release_number + 1 ))
+    echo "Releasing: $next_release"
+    git tag $next_release && git push origin $next_release
+    echo 'deploy with: '
+    echo "REVISION=$next_release bundle exec cap production deploy"
+    echo 'github diff:'
+    local project="${PWD##*/}"
+    echo "https://github.com/fastly/$project/compare/$current_release...$next_release"
+}
+
 ulimit -n 65536
 ulimit -u 2048
 
-export NVM_DIR="/Users/ryansouza/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+export NVM_DIR="$HOME/.nvm"
+. "/usr/local/opt/nvm/nvm.sh"
+
+# Google Cloud SDK
+source /Users/rsouza/google-cloud-sdk/completion.bash.inc
+source /Users/rsouza/google-cloud-sdk/path.bash.inc
+
+export GOPATH="$HOME/p/gopath"
+
+export BASTION_HOST='bastion'
+
+export PATH="$HOME/.cargo/bin:$PATH"

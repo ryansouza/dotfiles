@@ -1,15 +1,11 @@
 [user]
 	name = Ryan Souza
-	email = ryan@ryansouza.net
+	email = rsouza@fastly.com
 [core]
-	excludesfile = /Users/scoz/.gitignore_global
+	excludesfile = ~/.gitignore_global
 	autocrlf = input
 	quotepath = false
 	mergeoptions = --no-commit
-[diff]
-	tool = Kaleidoscope
-[difftool "Kaleidoscope"]
-	cmd = ksdiff-wrapper git \"$LOCAL\" \"$REMOTE\"
 
 [merge]
 	tool = diffmerge
@@ -27,13 +23,6 @@
 	cp = cherry-pick
 	branch-timestamps = for-each-ref --sort='authordate' --format='%(refname:short) : %(authordate)' refs/heads
 
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
-[mergetool "sourcetree"]
-	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
-
 [github]
 	user = scoz
 [color]
@@ -41,4 +30,10 @@
 [difftool]
 	prompt = false
 [push]
-	default = simple
+	default = current
+[rebase]
+	autoStash = true
+[url "git@gitlab.com:"]
+	insteadOf = https://gitlab.com/
+[url "git@github.com:"]
+	insteadOf = https://github.com/
