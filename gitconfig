@@ -6,12 +6,17 @@
 	autocrlf = input
 	quotepath = false
 	mergeoptions = --no-commit
+[core]
+  pager = delta --theme $(bat-theme)
+[interactive]
+  diffFilter = delta --color-only --theme $(bat-theme)
 
 [merge]
 	tool = diffmerge
 	conflictstyle = diff3
 
 [alias]
+  comit = commit
 	update = fetch --all
 	pull-ff = pull --ff-only @{u}
 	ff = merge --ff-only @{u}
@@ -22,6 +27,8 @@
 	co = checkout
 	cp = cherry-pick
 	branch-timestamps = for-each-ref --sort='authordate' --format='%(refname:short) : %(authordate)' refs/heads
+  br = !(git branch --list --sort=-committerdate --no-merged $(git default-branch) --format='%(refname:short) : %(authordate:relative)' | head -n 10 )
+  default-branch = !(set -o pipefail && (git symbolic-ref -q refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@') || git config init.defaultBranch || echo "main")
 
 [github]
 	user = scoz
@@ -37,3 +44,10 @@
 	insteadOf = https://gitlab.com/
 [url "git@github.com:"]
 	insteadOf = https://github.com/
+[diff]
+	algorithm = histogram
+	noprefix = true
+[init]
+	defaultBranch = main
+[pull]
+	ff = only

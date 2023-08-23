@@ -7,8 +7,7 @@ export LSCOLORS='gxBxhxDxfxhxhxhxhxcxcx'
 
 export HISTCONTROL=ignoredups
 
-# Paths for Homebrew
-export PATH=/usr/local/bin:/usr/local/sbin:$HOME/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH
 export PATH="/usr/local/opt/openssl/bin:$PATH"
 export MANPATH=/usr/local/share/man:$MANPATH
 
@@ -23,28 +22,32 @@ export GIT_PS1_SHOWUNTRACKEDFILES=''
 #export GIT_PS1_SHOWUPSTREAM="auto verbose"
 export PS1='\n[$? \h:\w$(__git_ps1 " (%s)")]\n$ '
 
-if [ -f `brew --prefix`/etc/bash_completion ]; then
-  . `brew --prefix`/etc/bash_completion
-fi
+# homebrew bash completion
+. "/usr/local/etc/profile.d/bash_completion.sh"
 
 # Add rbenv for managing ruby versions
 eval "$(rbenv init -)"
 
-# Pythonbrew!
-#[[ -s "$HOME/.pythonbrew/etc/bashrc" ]] && source "$HOME/.pythonbrew/etc/bashrc"
+# ruby-build use homebrew openssl
+export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+
 
 alias b='bundle'
 alias be='bundle exec'
 alias va='vagrant'
 alias vp='vagrant provision'
-alias hack="git checkout master && git pull && git checkout - && git rebase master $@"
+alias hack='git fetch origin $(git default-branch):$(git default-branch) && git rebase $(git default-branch) $@'
+alias gc="git commit -m"
 alias gca="git commit --amend"
 alias gcane="git commit --amend --no-edit"
 alias marked="open -a Marked"
 alias diff="diff -u"
+alias bat='/usr/local/bin/bat --theme $(bat-theme)'
+alias k=kubectl
 
-# Paths for cabal
-export PATH="$HOME/.cabal/bin:$PATH"
+function json {
+  jq . | bat -l json
+}
 
 function rmb {
   current_branch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
@@ -93,7 +96,7 @@ function git-release() {
     echo "https://github.com/fastly/$project/compare/$current_release...$next_release"
 }
 
-ulimit -n 65536
+ulimit -Sn 4096
 ulimit -u 2048
 
 export NVM_DIR="$HOME/.nvm"
@@ -104,7 +107,25 @@ source /Users/rsouza/google-cloud-sdk/completion.bash.inc
 source /Users/rsouza/google-cloud-sdk/path.bash.inc
 
 export GOPATH="$HOME/p/gopath"
+export PATH="$GOPATH/bin:$PATH"
 
 export BASTION_HOST='bastion'
 
 export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="/usr/local/opt/mysql@5.7/bin:$PATH"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/rsouza/google-cloud-sdk/path.bash.inc' ]; then . '/Users/rsouza/google-cloud-sdk/path.bash.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/rsouza/google-cloud-sdk/completion.bash.inc' ]; then . '/Users/rsouza/google-cloud-sdk/completion.bash.inc'; fi
+
+# krew PATH
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
+# k8s login
+export INFRA_SERVER=infra.plat.k8s.secretcdn.net
+export INFRA_PROVIDER=okta
+
+. <(flux completion bash)
+. <(kubectl completion bash)
